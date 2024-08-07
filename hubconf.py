@@ -5,7 +5,15 @@ import yaml
 from inference import StyleTTS2
 
 
-dependencies = ['librosa', 'numpy', 'phonemizer', 'torch', 'torchaudio', 'yaml', 'nltk']
+dependencies = ['librosa', 
+                'numpy', 
+                'phonemizer', 
+                'torch', 
+                'torchaudio', 
+                'yaml', 
+                'nltk',
+                'monotonic-align'
+                ]
 
 
 libri_tts_url = 'https://github.com/wilke0818/StyleTTS2-TorchHub/releases/download/v1.0.0-alpha.1/epochs_2nd_00020.pth'
