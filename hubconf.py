@@ -20,7 +20,7 @@ dependencies = ['librosa',
 libri_tts_url = 'https://github.com/wilke0818/StyleTTS2-TorchHub/releases/download/v1.0.0-alpha.1/epochs_2nd_00020.pth'
 ljspeech_url = 'https://github.com/wilke0818/StyleTTS2-TorchHub/releases/download/v1.0.3/LJSpeech.pth'
 
-def styletts2(progress=True, device=None, 
+def styletts2(progress=True, device=None,  
               pretrain_data: Literal['LibriTTS', 'LJSpeech'] ='LibriTTS') -> StyleTTS2:
     dir_path = os.path.dirname(os.path.realpath(__file__))
     config = yaml.safe_load(open(f"{dir_path}/Models/{pretrain_data}/config.yml"))
