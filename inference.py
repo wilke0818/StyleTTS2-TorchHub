@@ -47,11 +47,11 @@ class StyleTTS2:
 
         # config = yaml.safe_load(open("Models/LibriTTS/config.yml"))
         # load pretrained ASR model
-        ASR_config = config.get("ASR_config", False)
+        ASR_config = os.path.join(module_path,config.get("ASR_config", False))
         ASR_path = os.path.join(module_path,config.get("ASR_path", False))
-        print(ASR_path)
-        print(module_path)
-        print(config.get('ASR_path', False))
+        # print(ASR_path)
+        # print(module_path)
+        # print(config.get('ASR_path', False))
         text_aligner = load_ASR_models(ASR_path, ASR_config)
 
         # load pretrained F0 model
