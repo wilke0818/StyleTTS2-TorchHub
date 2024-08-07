@@ -15,10 +15,7 @@ import numpy as np
 import phonemizer
 import torch
 import torchaudio
-import yaml
 from nltk.tokenize import word_tokenize
-
-from senselab.audio.data_structures.audio import Audio
 
 # load phonemizer
 from models import build_model, load_ASR_models, load_F0_models
@@ -109,10 +106,10 @@ class StyleTTS2:
         mel_tensor = (torch.log(1e-5 + mel_tensor.unsqueeze(0)) - self.mean) / self.std
         return mel_tensor
 
-    def _compute_style(self, ref: Audio) -> torch.Tensor:
+    def _compute_style(self, wave: torch.Tensor, sr: int) -> torch.Tensor:
         """Computes the style of the audio which can then be applied to any voice/speech."""
-        wave, sr = ref.waveform, ref.sampling_rate
-        audio, index = librosa.effects.trim(wave.numpy(), top_db=30)
+        # wave, sr = ref.waveform, ref.sampling_rate
+        audio, _ = librosa.effects.trim(wave.numpy(), top_db=30)
         if sr != 24000:
             audio = librosa.resample(audio, sr, 24000)
         mel_tensor = self._preprocess(audio).to(self.device.value)
