@@ -12,7 +12,7 @@ dependencies = ['librosa',
                 'torchaudio', 
                 'yaml', 
                 'nltk',
-                'monotonic-align'
+                'monotonic_align'
                 ]
 
 
