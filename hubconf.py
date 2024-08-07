@@ -28,5 +28,5 @@ def styletts2(progress=True, device=None,
     params_whole = torch.hub.load_state_dict_from_url(ckpt_path, progress=progress, check_hash=False, map_location="cpu")
     if device is None: device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    return StyleTTS2(config, params_whole, dir_path, device)
+    return StyleTTS2(config=config, params_whole=params_whole, dir_path=dir_path, device=device)
 
