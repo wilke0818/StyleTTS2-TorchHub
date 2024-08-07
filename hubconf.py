@@ -18,7 +18,7 @@ dependencies = ['librosa',
 
 
 libri_tts_url = 'https://github.com/wilke0818/StyleTTS2-TorchHub/releases/download/v1.0.0-alpha.1/epochs_2nd_00020.pth'
-ljspeech_url = 'https://github.com/wilke0818/StyleTTS2-TorchHub/releases/download/v1.0.0-alpha.2/epoch_2nd_00100.pth'
+ljspeech_url = 'https://github.com/wilke0818/StyleTTS2-TorchHub/releases/download/v1.0.1/epoch_2nd_00100.pth'
 
 def styletts2(progress=True, device=None, 
               pretrain_data: Literal['LibriTTS', 'LJSpeech'] ='LibriTTS') -> StyleTTS2:
