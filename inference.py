@@ -29,7 +29,7 @@ from Utils.PLBERT.util import load_plbert
 class StyleTTS2:
     """StyleTTS2 Model that can run inference as described in the StyleTTS2 documentation."""
 
-    def __init__(self, config, params_whole, dir_path: str, device: str = None) -> None:
+    def __init__(self, config, params_whole, module_path, device: str = None) -> None:
         """Initializes a StyleTTS2 model.
 
         TODO write remainder of this
@@ -48,16 +48,16 @@ class StyleTTS2:
         # config = yaml.safe_load(open("Models/LibriTTS/config.yml"))
         # load pretrained ASR model
         ASR_config = config.get("ASR_config", False)
-        ASR_path = os.path.append(dir_path,config.get("ASR_path", False))
+        ASR_path = os.path.append(module_path,config.get("ASR_path", False))
         text_aligner = load_ASR_models(ASR_path, ASR_config)
 
         # load pretrained F0 model
-        F0_path = os.path.append(dir_path,config.get("F0_path", False))
+        F0_path = os.path.append(module_path,config.get("F0_path", False))
         pitch_extractor = load_F0_models(F0_path)
 
         # load BERT model
 
-        BERT_path = os.path.append(dir_path,config.get("PLBERT_dir", False))
+        BERT_path = os.path.append(module_path,config.get("PLBERT_dir", False))
         plbert = load_plbert(BERT_path)
 
         self.model_params = recursive_munch(config["model_params"])
