@@ -29,7 +29,7 @@ from Utils.PLBERT.util import load_plbert
 class StyleTTS2:
     """StyleTTS2 Model that can run inference as described in the StyleTTS2 documentation."""
 
-    def __init__(self, config, params_whole, dir_path: str = '.', device: str = None) -> None:
+    def __init__(self, config, params_whole, dir_path: str, device: str = None) -> None:
         """Initializes a StyleTTS2 model.
 
         TODO write remainder of this
