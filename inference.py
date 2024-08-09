@@ -300,6 +300,10 @@ class StyleTTS2:
         embedding_scale: float = 1.5,
     ) -> np.ndarray:
         """Runs style transfer of a given text that has strong emotional aspects."""
+        print(alpha)
+        print(beta)
+        print(diffusion_steps)
+        print(embedding_scale)
         text = text.strip()
         ps = self.global_phonemizer.phonemize([text])
         ps = word_tokenize(ps[0])
