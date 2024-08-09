@@ -129,9 +129,9 @@ class StyleTTS2:
         text: str,
         ref_s: torch.Tensor,
         alpha: float = 0.3,
-        beta: float = 0.7,
-        diffusion_steps: int = 5,
-        embedding_scale: int = 1,
+        beta: float = 0.1,
+        diffusion_steps: int = 10,
+        embedding_scale: float = 1,
     ) -> np.ndarray:
         """Runs generic inference of StyleTTS2."""
         text = text.strip()
@@ -205,10 +205,10 @@ class StyleTTS2:
         s_prev: torch.Tensor,
         ref_s: torch.Tensor,
         alpha: float = 0.3,
-        beta: float = 0.7,
+        beta: float = 0.9,
         t: float = 0.7,
-        diffusion_steps: int = 5,
-        embedding_scale: int = 1,
+        diffusion_steps: int = 10,
+        embedding_scale: float = 1.5,
     ) -> Tuple[np.ndarray, torch.Tensor]:
         """Runs Long Form Inference of StyleTTS2 for large text inputs."""
         text = text.strip()
@@ -292,10 +292,10 @@ class StyleTTS2:
         text: str,
         ref_s: torch.Tensor,
         ref_text: str,
-        alpha: float = 0.3,
-        beta: float = 0.7,
-        diffusion_steps: int = 5,
-        embedding_scale: int = 1,
+        alpha: float = 0.5,
+        beta: float = 0.9,
+        diffusion_steps: int = 10,
+        embedding_scale: float = 1.5,
     ) -> np.ndarray:
         """Runs style transfer of a given text that has strong emotional aspects."""
         text = text.strip()
