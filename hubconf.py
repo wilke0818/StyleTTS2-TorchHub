@@ -3,7 +3,7 @@ from typing import Literal
 import torch
 import yaml
 
-from inference import StyleTTS2
+from styletts_inference import StyleTTS2
 
 
 dependencies = ['librosa', 
