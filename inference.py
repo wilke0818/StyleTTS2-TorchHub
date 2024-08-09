@@ -116,7 +116,7 @@ class StyleTTS2:
         audio, _ = librosa.effects.trim(wave.numpy(), top_db=30)
         if sr != 24000:
             audio = librosa.resample(audio, sr, 24000)
-        mel_tensor = self._preprocess(audio).to(self.device.value)
+        mel_tensor = self._preprocess(audio).to(self.device)
 
         with torch.no_grad():
             ref_s = self.model.style_encoder(mel_tensor.unsqueeze(1))
@@ -140,18 +140,18 @@ class StyleTTS2:
         ps = " ".join(ps)
         tokens = self.textclenaer(ps)
         tokens.insert(0, 0)
-        tokens = torch.LongTensor(tokens).to(self.device.value).unsqueeze(0)
+        tokens = torch.LongTensor(tokens).to(self.device).unsqueeze(0)
 
         with torch.no_grad():
-            input_lengths = torch.LongTensor([tokens.shape[-1]]).to(self.device.value)
-            text_mask = self._length_to_mask(input_lengths).to(self.device.value)
+            input_lengths = torch.LongTensor([tokens.shape[-1]]).to(self.device)
+            text_mask = self._length_to_mask(input_lengths).to(self.device)
 
             t_en = self.model.text_encoder(tokens, input_lengths, text_mask)
             bert_dur = self.model.bert(tokens, attention_mask=(~text_mask).int())
             d_en = self.model.bert_encoder(bert_dur).transpose(-1, -2)
 
             s_pred = self.sampler(
-                noise=torch.randn((1, 256)).unsqueeze(1).to(self.device.value),
+                noise=torch.randn((1, 256)).unsqueeze(1).to(self.device),
                 embedding=bert_dur,
                 embedding_scale=embedding_scale,
                 features=ref_s,  # reference from the same speaker as the embedding
@@ -179,7 +179,7 @@ class StyleTTS2:
                 c_frame += int(pred_dur[i].data)
 
             # encode prosody
-            en = d.transpose(-1, -2) @ pred_aln_trg.unsqueeze(0).to(self.device.value)
+            en = d.transpose(-1, -2) @ pred_aln_trg.unsqueeze(0).to(self.device)
             if self.model_params.decoder.type == "hifigan":
                 asr_new = torch.zeros_like(en)
                 asr_new[:, :, 0] = en[:, :, 0]
@@ -188,7 +188,7 @@ class StyleTTS2:
 
             F0_pred, N_pred = self.model.predictor.F0Ntrain(en, s)
 
-            asr = t_en @ pred_aln_trg.unsqueeze(0).to(self.device.value)
+            asr = t_en @ pred_aln_trg.unsqueeze(0).to(self.device)
             if self.model_params.decoder.type == "hifigan":
                 asr_new = torch.zeros_like(asr)
                 asr_new[:, :, 0] = asr[:, :, 0]
@@ -220,18 +220,18 @@ class StyleTTS2:
 
         tokens = self.textclenaer(ps)
         tokens.insert(0, 0)
-        tokens = torch.LongTensor(tokens).to(self.device.value).unsqueeze(0)
+        tokens = torch.LongTensor(tokens).to(self.device).unsqueeze(0)
 
         with torch.no_grad():
-            input_lengths = torch.LongTensor([tokens.shape[-1]]).to(self.device.value)
-            text_mask = self._length_to_mask(input_lengths).to(self.device.value)
+            input_lengths = torch.LongTensor([tokens.shape[-1]]).to(self.device)
+            text_mask = self._length_to_mask(input_lengths).to(self.device)
 
             t_en = self.model.text_encoder(tokens, input_lengths, text_mask)
             bert_dur = self.model.bert(tokens, attention_mask=(~text_mask).int())
             d_en = self.model.bert_encoder(bert_dur).transpose(-1, -2)
 
             s_pred = self.sampler(
-                noise=torch.randn((1, 256)).unsqueeze(1).to(self.device.value),
+                noise=torch.randn((1, 256)).unsqueeze(1).to(self.device),
                 embedding=bert_dur,
                 embedding_scale=embedding_scale,
                 features=ref_s,  # reference from the same speaker as the embedding
@@ -265,7 +265,7 @@ class StyleTTS2:
                 c_frame += int(pred_dur[i].data)
 
             # encode prosody
-            en = d.transpose(-1, -2) @ pred_aln_trg.unsqueeze(0).to(self.device.value)
+            en = d.transpose(-1, -2) @ pred_aln_trg.unsqueeze(0).to(self.device)
             if self.model_params.decoder.type == "hifigan":
                 asr_new = torch.zeros_like(en)
                 asr_new[:, :, 0] = en[:, :, 0]
@@ -274,7 +274,7 @@ class StyleTTS2:
 
             F0_pred, N_pred = self.model.predictor.F0Ntrain(en, s)
 
-            asr = t_en @ pred_aln_trg.unsqueeze(0).to(self.device.value)
+            asr = t_en @ pred_aln_trg.unsqueeze(0).to(self.device)
             if self.model_params.decoder.type == "hifigan":
                 asr_new = torch.zeros_like(asr)
                 asr_new[:, :, 0] = asr[:, :, 0]
@@ -305,7 +305,7 @@ class StyleTTS2:
 
         tokens = self.textclenaer(ps)
         tokens.insert(0, 0)
-        tokens = torch.LongTensor(tokens).to(self.device.value).unsqueeze(0)
+        tokens = torch.LongTensor(tokens).to(self.device).unsqueeze(0)
 
         ref_text = ref_text.strip()
         ps = self.global_phonemizer.phonemize([ref_text])
@@ -314,21 +314,21 @@ class StyleTTS2:
 
         ref_tokens = self.textclenaer(ps)
         ref_tokens.insert(0, 0)
-        ref_tokens = torch.LongTensor(ref_tokens).to(self.device.value).unsqueeze(0)
+        ref_tokens = torch.LongTensor(ref_tokens).to(self.device).unsqueeze(0)
 
         with torch.no_grad():
-            input_lengths = torch.LongTensor([tokens.shape[-1]]).to(self.device.value)
-            text_mask = self._length_to_mask(input_lengths).to(self.device.value)
+            input_lengths = torch.LongTensor([tokens.shape[-1]]).to(self.device)
+            text_mask = self._length_to_mask(input_lengths).to(self.device)
 
             t_en = self.model.text_encoder(tokens, input_lengths, text_mask)
             bert_dur = self.model.bert(tokens, attention_mask=(~text_mask).int())
             d_en = self.model.bert_encoder(bert_dur).transpose(-1, -2)
 
-            ref_input_lengths = torch.LongTensor([ref_tokens.shape[-1]]).to(self.device.value)
-            ref_text_mask = self._length_to_mask(ref_input_lengths).to(self.device.value)
+            ref_input_lengths = torch.LongTensor([ref_tokens.shape[-1]]).to(self.device)
+            ref_text_mask = self._length_to_mask(ref_input_lengths).to(self.device)
             _ref_bert_dur = self.model.bert(ref_tokens, attention_mask=(~ref_text_mask).int())
             s_pred = self.sampler(
-                noise=torch.randn((1, 256)).unsqueeze(1).to(self.device.value),
+                noise=torch.randn((1, 256)).unsqueeze(1).to(self.device),
                 embedding=bert_dur,
                 embedding_scale=embedding_scale,
                 features=ref_s,  # reference from the same speaker as the embedding
@@ -356,7 +356,7 @@ class StyleTTS2:
                 c_frame += int(pred_dur[i].data)
 
             # encode prosody
-            en = d.transpose(-1, -2) @ pred_aln_trg.unsqueeze(0).to(self.device.value)
+            en = d.transpose(-1, -2) @ pred_aln_trg.unsqueeze(0).to(self.device)
             if self.model_params.decoder.type == "hifigan":
                 asr_new = torch.zeros_like(en)
                 asr_new[:, :, 0] = en[:, :, 0]
@@ -365,7 +365,7 @@ class StyleTTS2:
 
             F0_pred, N_pred = self.model.predictor.F0Ntrain(en, s)
 
-            asr = t_en @ pred_aln_trg.unsqueeze(0).to(self.device.value)
+            asr = t_en @ pred_aln_trg.unsqueeze(0).to(self.device)
             if self.model_params.decoder.type == "hifigan":
                 asr_new = torch.zeros_like(asr)
                 asr_new[:, :, 0] = asr[:, :, 0]
