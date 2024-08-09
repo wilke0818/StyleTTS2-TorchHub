@@ -16,6 +16,8 @@ import numpy as np
 import phonemizer
 import torch
 import torchaudio
+import nltk
+nltk.download('punkt')
 from nltk.tokenize import word_tokenize
 
 # load phonemizer
